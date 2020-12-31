@@ -1,6 +1,8 @@
 package com.ucy.rosdji;
 
+import android.content.Context;
 import android.os.Bundle;
+import android.widget.Toast;
 
 import org.ros.android.MessageCallable;
 import org.ros.android.RosActivity;
@@ -14,7 +16,7 @@ public class MainActivityROS extends RosActivity {
 
     private RosTextView<std_msgs.String> rosTextView;
     private TalkerHeight talkerHeight;
-    private Listener listener;
+    private ListenerFlightController listenerFlightController;
 
     public MainActivityROS() {
         super("ROS DJI", "ROS");
@@ -46,10 +48,15 @@ public class MainActivityROS extends RosActivity {
         //listener = new Listener();
         //nodeMainExecutor.execute(listener,nodeConfiguration);
 
+        listenerFlightController =new ListenerFlightController();
+        nodeMainExecutor.execute(listenerFlightController, nodeConfiguration);
+
         talkerHeight = new TalkerHeight();
         nodeMainExecutor.execute(talkerHeight,nodeConfiguration);
 
         nodeMainExecutor.execute(rosTextView, nodeConfiguration);
 
     }
+
+
 }

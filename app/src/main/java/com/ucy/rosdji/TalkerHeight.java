@@ -58,11 +58,15 @@ public class TalkerHeight extends AbstractNodeMain {
             @Override
             protected void loop() throws InterruptedException {
                 FlightControllerState flightControllerState = flightController.getState();
+                //TODO: remove the if
                 if (flightControllerState.isUltrasonicBeingUsed()){
                     droneHeight = flightControllerState.getUltrasonicHeightInMeters();
                     msg = "Drone Height1: = "+droneHeight;
                     Log.d("ROSdji: ", "UltrasonicHeightInMeters = " + droneHeight);
                 }else{
+                    //this is wrong
+                    //TODO: get the height with the use of the barometer that is correct
+                    //TODO: flightControllerState.getAircraftLocation().getAltitude()
                     droneHeight = flightControllerState.getTakeoffLocationAltitude();
                     msg = "Drone Height2: = "+droneHeight;
                     Log.d("ROSdji: ", "TakeoffLocationAltitude = " + droneHeight);
@@ -70,7 +74,7 @@ public class TalkerHeight extends AbstractNodeMain {
                 std_msgs.String droneHeightMessage = publisher.newMessage();
                 droneHeightMessage.setData(msg);
                 publisher.publish(droneHeightMessage);
-                Thread.sleep(1000);
+                Thread.sleep(1000); //change according to the timing of the calculations
             }
         });
     }
