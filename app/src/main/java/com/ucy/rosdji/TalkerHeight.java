@@ -22,6 +22,9 @@ import std_msgs.Float32;
 import std_msgs.String;
 
 public class TalkerHeight extends AbstractNodeMain {
+    private Aircraft aircraft;
+    private FlightController flightController;
+    private java.lang.String serialNumber;
 
     @Override
     public GraphName getDefaultNodeName() {
@@ -30,12 +33,12 @@ public class TalkerHeight extends AbstractNodeMain {
 
     @Override
     public void onStart(final ConnectedNode connectedNode) {
-        Aircraft aircraft = (Aircraft) DJISDKManager.getInstance().getProduct();
-        FlightController flightController = aircraft.getFlightController();
+        aircraft = (Aircraft) DJISDKManager.getInstance().getProduct();
+        flightController = aircraft.getFlightController();
         flightController.getSerialNumber(new CommonCallbacks.CompletionCallbackWith<java.lang.String>() {
             @Override
             public void onSuccess(java.lang.String s) {
-
+                serialNumber = s;
             }
 
             @Override
