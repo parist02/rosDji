@@ -144,8 +144,9 @@ public class MainActivity extends AppCompatActivity {
                             Log.d(TAG, String.format("onProductConnect newProduct:%s", baseProduct));
                             showToast("Product Connected");
                             //notifyStatusChange();
-                            Button button = findViewById(R.id.buttonStartROS);
-                            button.setEnabled(true);
+//                            Button button = findViewById(R.id.buttonStartROS);
+//                            button.setEnabled(true);
+                            startROS();
 
                         }
 
@@ -212,7 +213,7 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    public void startROS(View view){
+    public void startROS(){
         Intent intent = new Intent(this, MainActivityROS.class);
         startActivity(intent);
     }
