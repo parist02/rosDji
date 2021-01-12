@@ -1,4 +1,4 @@
-package com.ucy.rosdji;
+package com.ucy.rosdji.ros;
 
 import org.ros.concurrent.CancellableLoop;
 import org.ros.namespace.GraphName;

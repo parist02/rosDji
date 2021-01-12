@@ -1,4 +1,4 @@
-package com.ucy.rosdji;
+package com.ucy.rosdji.dji;
 
 import android.app.Application;
 import android.content.Context;

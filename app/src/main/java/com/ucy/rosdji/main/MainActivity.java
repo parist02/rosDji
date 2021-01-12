@@ -1,4 +1,4 @@
-package com.ucy.rosdji;
+package com.ucy.rosdji.main;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -13,9 +13,9 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
-import android.view.View;
-import android.widget.Button;
 import android.widget.Toast;
+
+import com.ucy.rosdji.R;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -50,6 +50,7 @@ public class MainActivity extends AppCompatActivity {
             Manifest.permission.BLUETOOTH_ADMIN,
             Manifest.permission.READ_EXTERNAL_STORAGE,
             Manifest.permission.READ_PHONE_STATE,
+            Manifest.permission.RECORD_AUDIO,
     };
     private List<String> missingPermission = new ArrayList<>();
     private AtomicBoolean isRegistrationInProgress = new AtomicBoolean(false);
