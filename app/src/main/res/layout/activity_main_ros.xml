@@ -77,6 +77,12 @@
             android:text="rtmp://192.168.137.28/live/test" />
     </LinearLayout>
 
+    <Switch
+        android:id="@+id/switchToggleVirtualControl"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Enable Virtual Control" />
+
     <Button
         android:id="@+id/buttonStartLiveStream"
         android:layout_width="match_parent"
@@ -91,20 +97,6 @@
         android:enabled="false"
         android:onClick="stopLiveStream"
         android:text="Stop livestream" />
-
-    <TextView
-        android:id="@+id/textViewLivesteramFps"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="FPS:    Livestream has not started yet"
-        android:textSize="18sp" />
-
-    <TextView
-        android:id="@+id/textViewLiveStreamBitRate"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="BitRate:    Livestream has not started yet"
-        android:textSize="18sp" />
 
     <com.ucy.rosdji.dji.VideoFeedView
         android:id="@+id/video_view_primary_video_feed"

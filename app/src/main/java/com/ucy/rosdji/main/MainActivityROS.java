@@ -1,11 +1,16 @@
 package com.ucy.rosdji.main;
 
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.appcompat.widget.SwitchCompat;
 
 import com.ucy.rosdji.R;
 import com.ucy.rosdji.dji.VideoFeedView;
@@ -18,8 +23,11 @@ import org.ros.android.view.RosTextView;
 import org.ros.node.NodeConfiguration;
 import org.ros.node.NodeMainExecutor;
 
+import dji.common.error.DJIError;
+import dji.common.flightcontroller.virtualstick.FlightControlData;
 import dji.common.gimbal.Rotation;
 import dji.common.gimbal.RotationMode;
+import dji.common.util.CommonCallbacks;
 import dji.sdk.camera.VideoFeeder;
 import dji.sdk.flightcontroller.FlightController;
 import dji.sdk.gimbal.Gimbal;
@@ -37,6 +45,7 @@ public class MainActivityROS extends RosActivity {
     private FlightController flightController;
     private Gimbal gimbal;
     private java.lang.String serialNumber;
+
 
     public MainActivityROS() {
         super("ROS DJI", "ROS");
@@ -68,8 +77,20 @@ public class MainActivityROS extends RosActivity {
                 Toast.makeText(getApplicationContext(), "status changed: " + i, Toast.LENGTH_SHORT).show();
             }
         };
-
+        flightController = ((Aircraft) DJISDKManager.getInstance().getProduct()).getFlightController();
+        flightController.setVirtualStickModeEnabled(false, djiError -> Toast.makeText(getApplicationContext(), "Virtual Commands are disabled", Toast.LENGTH_SHORT).show());
         //liveStreamManager = DJISDKManager.getInstance().getLiveStreamManager();
+        Switch switchVirtualControl = findViewById(R.id.switchToggleVirtualControl);
+        switchVirtualControl.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked){
+                    listenerFlightController.enableVirtualCommands();
+                }else{
+                    listenerFlightController.disableVirtualCommands();
+                }
+            }
+        });
     }
 
     @Override
@@ -131,7 +152,7 @@ public class MainActivityROS extends RosActivity {
             Button button2= findViewById(R.id.buttonStopLiveStream);
             button.setEnabled(false);
             button2.setEnabled(true);
-            getLiveStreamInfo();
+            //getLiveStreamInfo();
 
         }else {
             Toast.makeText(getApplicationContext(), "LiveStream failed to start", Toast.LENGTH_SHORT).show();
@@ -172,12 +193,12 @@ public class MainActivityROS extends RosActivity {
         DJISDKManager.getInstance().getLiveStreamManager().stopStream();
         Button button = findViewById(R.id.buttonStartLiveStream);
         Button button2 = findViewById(R.id.buttonStopLiveStream);
-        TextView textViewFps = findViewById(R.id.textViewLivesteramFps);
-        TextView textViewBitRate = findViewById(R.id.textViewLiveStreamBitRate);
+        //TextView textViewFps = findViewById(R.id.textViewLivesteramFps);
+        //TextView textViewBitRate = findViewById(R.id.textViewLiveStreamBitRate);
         java.lang.String stringFps = "FPS:    LiveStream has stopped";
         java.lang.String stringBitRate = "BitRate:    LiveStream has stopped";
-        textViewFps.setText(stringFps);
-        textViewBitRate.setText(stringBitRate);
+        //textViewFps.setText(stringFps);
+        //textViewBitRate.setText(stringBitRate);
         button.setEnabled(true);
         button2.setEnabled(false);
         Toast.makeText(getApplicationContext(), "LiveStream has stopped", Toast.LENGTH_SHORT).show();
@@ -191,14 +212,73 @@ public class MainActivityROS extends RosActivity {
         return true;
     }
 
-    public void getLiveStreamInfo(){
-        TextView textViewFps = findViewById(R.id.textViewLivesteramFps);
-        TextView textViewBitRate = findViewById(R.id.textViewLiveStreamBitRate);
-        java.lang.String stringFps = "FPS:    "+DJISDKManager.getInstance().getLiveStreamManager().getLiveVideoFps();
-        java.lang.String stringBitRate = "BitRate:    "+DJISDKManager.getInstance().getLiveStreamManager().getLiveVideoBitRate();
-        textViewFps.setText(stringFps);
-        textViewBitRate.setText(stringBitRate);
-    }
+//    public void getLiveStreamInfo(){
+//        TextView textViewFps = findViewById(R.id.textViewLivesteramFps);
+//        TextView textViewBitRate = findViewById(R.id.textViewLiveStreamBitRate);
+//        java.lang.String stringFps = "FPS:    "+DJISDKManager.getInstance().getLiveStreamManager().getLiveVideoFps();
+//        java.lang.String stringBitRate = "BitRate:    "+DJISDKManager.getInstance().getLiveStreamManager().getLiveVideoBitRate();
+//        textViewFps.setText(stringFps);
+//        textViewBitRate.setText(stringBitRate);
+//    }
 
+
+//    public static void sendDroneCommands(int [] commands){
+//        float roll,pitch,yaw,throttle;
+//        switch (commands[0]){
+//            case 1:
+//                pitch = 10;
+//                break;
+//            case 2:
+//                pitch = -10;
+//                break;
+//            default:
+//                pitch =0;
+//        }
+//        switch (commands[1]){
+//            case 2:
+//                roll = 10;
+//                break;
+//            case 1:
+//                roll = -10;
+//                break;
+//            default:
+//                roll =0;
+//        }
+//        switch (commands[2]){
+//            case 1:
+//                throttle = 2;
+//                break;
+//            case 2:
+//                throttle = -2;
+//                break;
+//            default:
+//                throttle =0;
+//        }
+//        switch (commands[3]){
+//            case 2:
+//                yaw = 15;
+//                break;
+//            case 1:
+//                yaw = -15;
+//                break;
+//            default:
+//                yaw =0;
+//        }
+//        flightController.sendVirtualStickFlightControlData(new FlightControlData(roll, pitch, yaw, throttle), djiError -> {});
+//        if (commands[4] == 1) {
+//            droneLand();
+//        }
+//    }
+//
+//
+//    private void droneLand(){
+//        flightController.startLanding(djiError -> {});
+//        while(!flightController.getState().isLandingConfirmationNeeded()){
+//            try {
+//                Thread.sleep(200);
+//            }catch (InterruptedException ignored){}
+//        }
+//        flightController.confirmLanding(djiError -> {});
+//    }
 
 }
