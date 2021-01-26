@@ -93,6 +93,10 @@ public class MainActivityROS extends RosActivity {
         });
     }
 
+    public void startVirtualLanding(View view){
+        listenerFlightController.sendVirtualCommandLanding();
+    }
+
     @Override
     protected void init(NodeMainExecutor nodeMainExecutor) {
         NodeConfiguration nodeConfiguration = NodeConfiguration.newPublic(getRosHostname());

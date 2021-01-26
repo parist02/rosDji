@@ -40,6 +40,10 @@ public class ListenerFlightController extends AbstractNodeMain {
         virtualFlightController.enableVirtualCommands();
     }
 
+    public void sendVirtualCommandLanding(){
+        virtualFlightController.sendVirtualCommandLanding(1);
+    }
+
     public String getSerialNumber() {
         return serialNumber;
     }

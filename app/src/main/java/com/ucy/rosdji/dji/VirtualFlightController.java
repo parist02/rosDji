@@ -71,40 +71,40 @@ public class VirtualFlightController {
         float roll,pitch,yaw,throttle;
         switch (commands[0]){
             case 1:
-                pitch = 5;
+                pitch = 3;
                 break;
             case 2:
-                pitch = -5;
+                pitch = -3;
                 break;
             default:
                 pitch =0;
         }
         switch (commands[1]){
             case 2:
-                roll = 5;
+                roll = 3;
                 break;
             case 1:
-                roll = -5;
+                roll = -3;
                 break;
             default:
                 roll =0;
         }
         switch (commands[2]){
             case 1:
-                throttle = 2;
+                throttle = 1;
                 break;
             case 2:
-                throttle = -2;
+                throttle = -1;
                 break;
             default:
                 throttle =0;
         }
         switch (commands[3]){
             case 2:
-                yaw = 25;
+                yaw = 30;
                 break;
             case 1:
-                yaw = -25;
+                yaw = -30;
                 break;
             default:
                 yaw =0;

@@ -84,6 +84,14 @@
         android:text="Enable Virtual Control" />
 
     <Button
+        android:id="@+id/button3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:onClick="startVirtualLanding"
+        android:text="Land" />
+
+    <Button
         android:id="@+id/buttonStartLiveStream"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
