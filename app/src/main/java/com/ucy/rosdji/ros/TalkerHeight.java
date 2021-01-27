@@ -2,6 +2,8 @@ package com.ucy.rosdji.ros;
 
 import android.util.Log;
 
+import com.ucy.rosdji.dji.VirtualFlightController;
+
 import org.ros.concurrent.CancellableLoop;
 import org.ros.namespace.GraphName;
 import org.ros.node.AbstractNodeMain;
@@ -10,6 +12,7 @@ import org.ros.node.NodeMain;
 import org.ros.node.topic.Publisher;
 
 import java.io.StringReader;
+import java.text.DecimalFormat;
 
 import dji.common.error.DJIError;
 import dji.common.flightcontroller.FlightControllerState;
@@ -22,9 +25,7 @@ import std_msgs.Float32;
 import std_msgs.String;
 
 public class TalkerHeight extends AbstractNodeMain {
-    private Aircraft aircraft;
-    private FlightController flightController;
-    private java.lang.String serialNumber;
+    private DecimalFormat decimalFormat;
 
     @Override
     public GraphName getDefaultNodeName() {
@@ -33,19 +34,8 @@ public class TalkerHeight extends AbstractNodeMain {
 
     @Override
     public void onStart(final ConnectedNode connectedNode) {
-        aircraft = (Aircraft) DJISDKManager.getInstance().getProduct();
-        flightController = aircraft.getFlightController();
-        flightController.getSerialNumber(new CommonCallbacks.CompletionCallbackWith<java.lang.String>() {
-            @Override
-            public void onSuccess(java.lang.String s) {
-                serialNumber = s;
-            }
-
-            @Override
-            public void onFailure(DJIError djiError) {
-
-            }
-        });
+        decimalFormat = new DecimalFormat("0.00");
+        decimalFormat.setMaximumFractionDigits(2);
         final Publisher<std_msgs.String> publisher = connectedNode.newPublisher("drone_height", String._TYPE);
         // This CancellableLoop will be canceled automatically when the node shuts down.
         connectedNode.executeCancellableLoop(new CancellableLoop() {
@@ -60,20 +50,8 @@ public class TalkerHeight extends AbstractNodeMain {
 
             @Override
             protected void loop() throws InterruptedException {
-                FlightControllerState flightControllerState = flightController.getState();
-                //TODO: remove the if
-                if (flightControllerState.isUltrasonicBeingUsed()){
-                    droneHeight = flightControllerState.getUltrasonicHeightInMeters();
-                    msg = "Drone Height1: = "+droneHeight;
-                    Log.d("ROSdji: ", "UltrasonicHeightInMeters = " + droneHeight);
-                }else{
-                    //this is wrong
-                    //TODO: get the height with the use of the barometer that is correct
-                    //TODO: flightControllerState.getAircraftLocation().getAltitude()
-                    droneHeight = flightControllerState.getTakeoffLocationAltitude();
-                    msg = "Drone Height2: = "+droneHeight;
-                    Log.d("ROSdji: ", "TakeoffLocationAltitude = " + droneHeight);
-                }
+                droneHeight = ((Aircraft)DJISDKManager.getInstance().getProduct()).getFlightController().getState().getUltrasonicHeightInMeters();
+                msg = "Drone Height: = "+decimalFormat.format(droneHeight);
                 std_msgs.String droneHeightMessage = publisher.newMessage();
                 droneHeightMessage.setData(msg);
                 publisher.publish(droneHeightMessage);

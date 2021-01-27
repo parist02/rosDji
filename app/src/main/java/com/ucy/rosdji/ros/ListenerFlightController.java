@@ -1,6 +1,8 @@
 package com.ucy.rosdji.ros;
 
 
+import android.content.Context;
+
 import com.ucy.rosdji.dji.VirtualFlightController;
 
 import org.ros.message.MessageListener;
@@ -32,16 +34,24 @@ public class ListenerFlightController extends AbstractNodeMain {
         });
     }
 
-    public void disableVirtualCommands(){
-        virtualFlightController.disableVirtualCommands();
+    public void disableVirtualCommands(Context context){
+        virtualFlightController.disableVirtualCommands(context);
     }
 
-    public void enableVirtualCommands(){
-        virtualFlightController.enableVirtualCommands();
+    public void enableVirtualCommands(Context context){
+        virtualFlightController.enableVirtualCommands(context);
     }
 
     public void sendVirtualCommandLanding(){
         virtualFlightController.sendVirtualCommandLanding(1);
+    }
+
+    public void sendVirtualCommandTakeoff(){
+        virtualFlightController.sendVirtualCommandTakeOff();
+    }
+
+    public void setPitchAngle(float pitchAngle, Context context){
+        virtualFlightController.setPitchAngle(pitchAngle,context);
     }
 
     public String getSerialNumber() {

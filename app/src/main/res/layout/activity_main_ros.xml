@@ -11,7 +11,7 @@
         android:id="@+id/textRos"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="10dp"
+        android:layout_margin="5dp"
         android:textSize="30sp" />
 
     <TextView
@@ -41,7 +41,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:onClick="setPitchAngle"
+            android:onClick="setPitchAngleFromEditText"
             android:text="set" />
     </LinearLayout>
 
@@ -77,24 +77,20 @@
             android:text="rtmp://192.168.137.28/live/test" />
     </LinearLayout>
 
-    <Switch
-        android:id="@+id/switchToggleVirtualControl"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Enable Virtual Control" />
-
-    <Button
-        android:id="@+id/button3"
+    <ToggleButton
+        android:id="@+id/toggleButtonToggleVirtualControl"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:onClick="startVirtualLanding"
-        android:text="Land" />
+        android:layout_margin="5dp"
+        android:textOff="Enable virtual control"
+        android:textOn="Disable virtual control" />
 
     <Button
         android:id="@+id/buttonStartLiveStream"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_margin="5dp"
         android:onClick="startLiveStream"
         android:text="Start Livestream" />
 
@@ -102,13 +98,41 @@
         android:id="@+id/buttonStopLiveStream"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_margin="5dp"
         android:enabled="false"
         android:onClick="stopLiveStream"
         android:text="Stop livestream" />
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/button4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="20dp"
+            android:layout_weight="1"
+            android:onClick="startVirtualTakeoff"
+            android:text="take off" />
+
+        <Button
+            android:id="@+id/button3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginLeft="20dp"
+            android:layout_weight="1"
+            android:onClick="startVirtualLanding"
+            android:text="Land" />
+    </LinearLayout>
+
     <com.ucy.rosdji.dji.VideoFeedView
         android:id="@+id/video_view_primary_video_feed"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp" />
 
 </LinearLayout>
